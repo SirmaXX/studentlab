@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block app_content %}
-    <h1>{{ _('Hi,') }} {{ current_user.username }}!</h1>
+    <h1>{{ _('Hi,') }} {{ current_user.username }}  puanınız: {{ current_user.score }}!</h1>
 
     {% if current_user.enabled == 0 %}
     <h2> {{ _("You are not enabled yet") }} </h2>

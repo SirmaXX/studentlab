@@ -9,12 +9,28 @@ from app.email import send_password_reset_email
 from flask_babel import lazy_gettext as _l
 from datetime import datetime
 from app.utils.decorators import admin_required
+from app.utils.weather import get_weather_days, get_weather
 
-@app.route('/')
-@app.route('/index')
-@login_required
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template('index.html', title='Ev')
+    if request.method == "GET":
+        return render_template('index.html')
+    elif request.method == "POST":
+        city = request.form["city"]
+        days=get_weather_days(city, 3)
+        result = get_weather(city)
+        print(result)
+        return render_template("index.html", days=days,cityname=city)
+    else:
+        return "Beklenmedik web istegi"
+
+
+
+
+@app.route('/panel')
+@login_required
+def panel():
+    return render_template('panel.html', title='Ev')
 
 
 @app.route('/language/<language>')

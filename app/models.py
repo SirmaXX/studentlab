@@ -24,6 +24,7 @@ class User(UserMixin, db.Model):
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
     admin = db.Column(db.Integer, default=0) # 0 not admin, 1 admin
     enabled = db.Column(db.Integer, default=1) # 0 not enabled, 1 enabled
+    point= db.Column(db.Integer, default=0)
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
@@ -51,3 +52,69 @@ class User(UserMixin, db.Model):
         except:
             return
         return User.query.get(id)
+
+
+
+
+# Ders tablosu (Daha önce tanımladık)
+class Ders(db.Model):
+    __tablename__ = 'dersler'
+
+    id = db.Column(db.Integer, primary_key=True)
+    ders_adi = db.Column(db.String(100), nullable=False)
+    ders_kodu = db.Column(db.String(20), unique=True, nullable=False)
+    ders_aciklamasi = db.Column(db.Text)
+
+    def __init__(self, ders_adi, ders_kodu, ders_aciklamasi):
+        self.ders_adi = ders_adi
+        self.ders_kodu = ders_kodu
+        self.ders_aciklamasi = ders_aciklamasi
+
+# Sınav tablosu (Daha önce tanımladık)
+class Sinav(db.Model):
+    __tablename__ = 'sinavlar'
+
+    id = db.Column(db.Integer, primary_key=True)
+    ders_id = db.Column(db.Integer, db.ForeignKey('dersler.id'), nullable=False)
+    sinav_tarihi = db.Column(db.Date, nullable=False)
+    soru_sayisi = db.Column(db.Integer, nullable=False)
+    zorluk_seviyesi = db.Column(db.String(20), nullable=False)
+
+    ders = db.relationship('Ders', backref='sinavlar')
+
+    def __init__(self, ders_id, sinav_tarihi, soru_sayisi, zorluk_seviyesi):
+        self.ders_id = ders_id
+        self.sinav_tarihi = sinav_tarihi
+        self.soru_sayisi = soru_sayisi
+        self.zorluk_seviyesi = zorluk_seviyesi
+
+# Soru tablosu
+class Soru(db.Model):
+    __tablename__ = 'sorular'
+
+    id = db.Column(db.Integer, primary_key=True)
+    sinav_id = db.Column(db.Integer, db.ForeignKey('sinavlar.id'), nullable=False)
+    soru_metni = db.Column(db.Text, nullable=False)
+
+    sinav = db.relationship('Sinav', backref='sorular')
+
+    def __init__(self, sinav_id, soru_metni):
+        self.sinav_id = sinav_id
+        self.soru_metni = soru_metni
+
+# Şık tablosu
+class Sik(db.Model):
+    __tablename__ = 'siklar'
+
+    id = db.Column(db.Integer, primary_key=True)
+    soru_id = db.Column(db.Integer, db.ForeignKey('sorular.id'), nullable=False)
+    sik_metni = db.Column(db.Text, nullable=False)
+    dogru_mu = db.Column(db.Boolean, default=False)
+
+    soru = db.relationship('Soru', backref='siklar')
+
+    def __init__(self, soru_id, sik_metni, dogru_mu=False):
+        self.soru_id = soru_id
+        self.sik_metni = sik_metni
+        self.dogru_mu = dogru_mu
+        

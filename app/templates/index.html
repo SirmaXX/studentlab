@@ -1,9 +1,30 @@
 {% extends "base.html" %}
 
 {% block app_content %}
-    <h1>{{ _('Hi,') }} {{ current_user.username }}!</h1>
+<form method="POST">
+    <div style="display: flex;">
+      <input type="text" class="form-control" name="city">
+      <input type="submit" class="btn btn-primary" value="Submit">
+    </div>
+  </form>
 
-    {% if current_user.enabled == 0 %}
-    <h2> {{ _("You are not enabled yet") }} </h2>
-    {% endif %}
+{% if days %}
+<h2>Weather Forecast for {{cityname}}</h2>
+<div class="row">
+{% for day in days %}
+
+
+    <div class="col-md-4">
+        <!-- Content for the first column -->
+        <p>Date: {{ day['date_value'] }}</p>
+        <p>Average Temperature: {{ day['avgtemp_c'] }}°C</p>
+        <img src="{{ day['icon'] }}" alt="Weather Icon">
+        <p>Condition: {{ day['condition'] }}</p>
+    </div>
+
+
+{% endfor %}
+</div>
+{% endif %}
+
 {% endblock %}

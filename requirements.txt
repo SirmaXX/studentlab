@@ -9,3 +9,5 @@ pyjwt
 flask-bootstrap
 flask-babel
 email-validator
+flask-mysql
+requests

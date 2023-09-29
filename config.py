@@ -8,11 +8,11 @@ class Config(object):
     #SQLALCHEMY_DATABASE_URI = 'postgresql://username:passwd@localhost:5432/dbname'
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    ADMINS=["ilkermanap@gmail.com"]
+    ADMINS=["sea-97@hotmail.com"]
     LANGUAGES = {"en": "English", "tr":"Turkish"}
     MAIL_SERVER="smtp.gmail.com"
     MAIL_PASSWORD='xxxxxxxxx'
     MAIL_PORT=465
     MAIL_USE_SSL=True
     MAIL_USE_TLS=False
-    MAIL_USERNAME="ilkermanap@gmail.com"
+    MAIL_USERNAME="sea-97@hotmail.com"
